@@ -2,17 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
-    TestController,
     DashboardController,
     MainController,
-    ServicesController,
     MasterController,
-    SPKController,
-    ReportController,
-    ApprovalController,
-    InvoiceController,
-    FeatureController,
-    B2CController
+    SecurityController,
+    CleanController,
+    ReportController
+
 };
 
 /*
@@ -37,15 +33,16 @@ Route::group(['middleware' => ['session_key']],function(){
     Route::post('/update-notif', [MainController::class, 'updateNotifIsread'])->name('updatenotif');
 
 
-
-
-
+    Route::get('/master-data', [MasterController::class, 'masterData'])->name('master-data');
 
 
     
-
-
-
-
+    Route::get('/security', [SecurityController::class, 'Security'])->name('security');
+    
+    
+    Route::get('/cleaning', [CleanController::class, 'Cleaning'])->name('cleaning');
+    
+    
+    Route::get('/report', [ReportController::class, 'report'])->name('report');
     
 });
