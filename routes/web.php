@@ -34,6 +34,9 @@ Route::group(['middleware' => ['session_key']],function(){
 
 
     Route::get('/master-data', [MasterController::class, 'masterData'])->name('master-data');
+    Route::get('/karyawan', [MasterController::class, 'karyawan'])->name('karyawan');
+    Route::get('/perusahaan', [MasterController::class, 'perusahaan'])->name('perusahaan');
+    Route::get('/presensi', [MasterController::class, 'presensi'])->name('presensi');
 
 
     

@@ -19,10 +19,24 @@ class DashboardController extends Controller
     {
         $role = Session::get('modules')['role'] ?? null;
 
-        if ($role === 'sADMIN') {
+         $menus = DB::table('mst.mst_menu')
+                    ->leftJoin('mst.mst_role_menu', 'mst.mst_menu.id', '=', 'mst.mst_role_menu.mst_menu_id')
+                    ->leftJoin('mst.mst_user_role', 'mst.mst_role_menu.mst_user_role_id', '=', 'mst.mst_user_role.id')
+                    ->where('mst_user_role.role_name', $role ?? '')
+                    ->where('mst_menu.is_active', true)
+                    ->orderBy('mst.mst_menu.menu_order', 'asc')
+                    ->select('mst.mst_menu.*', 'mst.mst_role_menu.mst_user_role_id', 'mst.mst_user_role.role_name')
+                    ->get();
+
+        $menuTree = $menus->groupBy('menu_parent');
+
+        Session::put('menus', $menuTree);
+            
+
+        if ($role === 'ADMIN') {
             return $this->dashAdmin();
         } 
-        elseif ($role === 'sSUPER ADMIN') {
+        elseif ($role === 'SUPER ADMIN') {
             return $this->dashSuperAdmin();
         } 
         else 
@@ -39,31 +53,11 @@ class DashboardController extends Controller
     private function dashAdmin()
     {
 
-        $username =  session()->get('user_module')['username'];
-        $countData = DB::connection('mtr')->table('mvm.v_spk_detail')
-        ->select(
-            DB::raw("COUNT(*) as total_service"),
-            DB::raw("SUM(CASE WHEN source = 'Direct' THEN 1 ELSE 0 END) as total_direct")
-        )
-        ->where('spk_status', 'ONPROGRESS')
-        ->whereIn('status_service', ['ONSCHEDULE'])
-        ->where('pic_branch', $username)
-        ->first();
-    
-        $countservice = $countData?->total_service ?? 0;
-        $direct = $countData?->total_direct ?? 0;
-
-        $invoice = DB::connection('mtr')->table('mvm.mvm_invoice_h')
-        ->where('create_by', $username)
-        ->whereIn('status', ['PROSES', 'REQUEST'])
-        ->count();
+       
 
         $data = [
             'title' => 'Dashboard',
-            'service' => $countservice,
-            'direct' => $direct,
-            'invoice' => $invoice,
-            'content' => 'dashboard/bengkel',
+            'content' => 'dashboard/admin',
         ];
     
         return view('layout/wrapper', $data);
@@ -71,30 +65,10 @@ class DashboardController extends Controller
 
     private function dashSuperAdmin()
     {
-        $vehicle = DB::connection('mtr')->table('mst.mst_vehicle')->count();
-        $rating = DB::connection('mtr')->table('mvm.v_rating_mvm')->get();
-        $motor = DB::connection('mtr')->table('mst.v_chart_vehicle_motor')->get();
-    
-        $dataPointsrating = $rating->map(function ($item) {
-            return [
-                "name" => $item->rating,
-                "y" => $item->total
-            ];
-        });
-    
-        $dataPointsmotor = $motor->map(function ($item) {
-            return [
-                "name" => $item->client_name,
-                "y" => $item->total
-            ];
-        });
-    
+
         $data = [
             'title' => 'Dashboard',
-            'vehicle' => $vehicle,
-            'dataPointsrating' => $dataPointsrating->toJson(),
-            'dataPointsmotor' => $dataPointsmotor,
-            'content' => 'dashboard/admin_ts3',
+            'content' => 'dashboard/super_admin',
         ];
     
         return view('layout/wrapper', $data);

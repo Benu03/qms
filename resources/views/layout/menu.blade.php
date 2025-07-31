@@ -30,9 +30,7 @@
 </style>
 
 
-<!-- Main Sidebar Container -->
-  {{-- <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: rgba(50, 83, 194, 0.746); border-top-right-radius: 15px; border-top-left-radius: 15px; margin: 2px 2px 2px 2px;"> --}}
-    <aside class="main-sidebar sidebar-dark-primary elevation-4 custom-sidebar">
+ <aside class="main-sidebar sidebar-dark-primary elevation-4 custom-sidebar">
     <a href="{{ route('dashboard') }}" class="brand-link d-flex flex-column align-items-center" style="height: auto;">
       <img id="logo_wrap"   src="{{ asset('img/qms_1.png') }}" style="width: 200px; height: 70px;">
     </a>
@@ -41,84 +39,67 @@
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
+    <li class="nav-item">
+        <a href="{{ route('dashboard') }}" class="nav-link">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>Dashboard</p>
+        </a>
+    </li>
 
-            <li class="nav-item">
-              <a href="{{ route('dashboard') }}" class="nav-link">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
-                <p>
-                  Dashboard
-                </p>
-              </a>
-            </li>
-             @php
-                $menus = DB::table('mst.mst_menu')
-                    ->leftJoin('mst.mst_role_menu', 'mst.mst_menu.id', '=', 'mst.mst_role_menu.mst_menu_id')
-                    ->leftJoin('mst.mst_user_role', 'mst.mst_role_menu.mst_user_role_id', '=', 'mst.mst_user_role.id')
-                    ->where('mst_user_role.role_name', session()->get('modules')['role'] ?? '')
-                    ->where('mst_menu.is_active', true)
-                    ->orderBy('mst.mst_menu.menu_order', 'asc')
-                    ->select('mst.mst_menu.*', 'mst.mst_role_menu.mst_user_role_id', 'mst.mst_user_role.role_name')
-                    ->get();
+    @php
+        $menuTree = session('menus');
+    @endphp
 
-                $menuTree = $menus->groupBy('menu_parent');
-                @endphp
+    @if(isset($menuTree[0]) && count($menuTree[0]) > 0)
+        @foreach ($menuTree[0] as $parent)
+                  @php
+                      $hasChildren = isset($menuTree[$parent->id]) && count($menuTree[$parent->id]) > 0;
+                      $isParentActive = Request::is(ltrim($parent->menu_url, '/') . '*');
+                  @endphp
 
-              @if(isset($menuTree[0]) && count($menuTree[0]) > 0)
-                @foreach ($menuTree[0] as $parent)
-                    @php
-                        $hasChildren = isset($menuTree[$parent->id]) && count($menuTree[$parent->id]) > 0;
-                        $isParentActive = Request::is(ltrim($parent->menu_url, '/') . '*');
-                    @endphp
+                  <li class="nav-item {{ $hasChildren ? 'has-treeview' : '' }} {{ $isParentActive ? 'menu-is-opening menu-open' : '' }}">
+                      <a href="{{ $hasChildren ? '#' : route($parent->menu_url) }}" class="nav-link">
+                          <i class="{{ $parent->menu_icon }} nav-icon"></i>
+                          <p>
+                              {{ $parent->menu_name }}
+                              @if ($hasChildren)
+                                  <i class="fas fa-angle-left right"></i>
+                              @endif
+                          </p>
+                      </a>
 
-                  
-                    <li class="nav-item {{ $hasChildren ? 'has-treeview' : '' }} {{ $isParentActive ? 'menu-is-opening menu-open' : '' }}">
-                        <a href="{{ $hasChildren ? '#' : route($parent->menu_url) }}" class="nav-link">
-                            <i class="{{ $parent->menu_icon }} nav-icon"></i>
-                            <p>
-                                {{ $parent->menu_name }}
-                                @if ($hasChildren)
-                                    <i class="fas fa-angle-left right"></i>
-                                @endif
-                            </p>
-                        </a>
+                      @if ($hasChildren)
+                          <ul class="nav nav-treeview">
+                              @foreach ($menuTree[$parent->id] as $child)
+                                  @php
+                                      $isChildActive = Request::is(ltrim($child->menu_url, '/') . '*');
+                                  @endphp
+                                  <li class="nav-item ml-4 {{ $isChildActive ? 'active' : '' }}">
+                                      <a href="{{ route($child->menu_url) }}" class="nav-link">
+                                          <i class="{{ $child->menu_icon }} nav-icon"></i>
+                                          <p>{{ $child->menu_name }}</p>
+                                      </a>
+                                  </li>
+                              @endforeach
+                          </ul>
+                      @endif
+                  </li>
+              @endforeach
+          @else
+              <li class="nav-item">
+                  <a href="#" class="nav-link">
+                      <i class="nav-icon fas fa-exclamation-triangle"></i>
+                      <p>No Menu Available</p>
+                  </a>
+              </li>
+          @endif
 
-                     
-                        @if ($hasChildren)
-                            <ul class="nav nav-treeview">
-                                @foreach ($menuTree[$parent->id] as $child)
-                                    @php
-                                        $isChildActive = Request::is(ltrim($child->menu_url, '/') . '*');
-                                    @endphp
-                                    <li class="nav-item ml-4 {{ $isChildActive ? 'active' : '' }}">
-                                        <a href="{{ route($child->menu_url) }}" class="nav-link">
-                                            <i class="{{ $child->menu_icon }} nav-icon"></i>
-                                            <p>{{ $child->menu_name }}</p>
-                                        </a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        @endif
-                    </li>
-                @endforeach
-                @else
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-exclamation-triangle"></i>
-                        <p>No Menu Available</p>
-                    </a>
-                </li>
-              @endif
+          <div style="margin-top: 80px;"></div>
 
+      </ul>
 
-                <div style="margin-top: 80px;"></div>
-
-
-
-
-          
-        </ul>
       </nav>
 
     </div>
