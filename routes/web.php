@@ -49,3 +49,7 @@ Route::group(['middleware' => ['session_key']],function(){
     Route::get('/report', [ReportController::class, 'report'])->name('report');
     
 });
+
+Route::fallback(function () {
+    return response()->view('global.notification.url_forbidden', ['title' => 'Forbidden'], 403);
+});

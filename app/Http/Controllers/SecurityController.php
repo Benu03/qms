@@ -16,6 +16,28 @@ class SecurityController extends Controller
 {
 
 
+    public function Security(Request $request)
+    {
+        
+        $role = Session::get('modules')['role'] ?? null;
+        if ($role === 'ADMIN' || $role === 'SUPER ADMIN') {
+                 $data = [
+                        'title' => 'Security Page',
+                        'content' => 'security/security',
+                ];
+                
+                return view('layout/wrapper', $data);
+                
+        }
+        
+        $data = [   
+                'title' => 'Access Forbidden',
+                'content'   => 'global/notification/forbidden'
+        ];
+
+        return view('layout/wrapper',$data);
+        
+    }
 
 
 }
