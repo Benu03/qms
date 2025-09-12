@@ -21,6 +21,13 @@ class MainController extends Controller
         return view('welcome');
 
     }
+    
+    public function login()
+    {
+  
+         return redirect(config('static.url_login_mudahin'));
+         
+    }
 
 
 

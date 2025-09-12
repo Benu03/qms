@@ -18,6 +18,7 @@ use App\Http\Controllers\{
 */
 
 Route::get('/', [MainController::class, 'index'])->name('index');
+Route::get('/login', [MainController::class, 'login'])->name('login');
 
 
 Route::fallback(function () {

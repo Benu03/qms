@@ -14,5 +14,6 @@ return [
   'reverse_proxy' => env('REVERSE_PROXY','false'),
   'key_static' => env('KEY_STATIC','false'),
   'url_generate_pdf_invoice' => env('URL_INVOICE_GENERATE_PDF'),
+    'url_login_mudahin' => env('URL_LOGIN_MUDAHIN'),
   
 ];
