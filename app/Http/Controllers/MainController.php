@@ -18,7 +18,21 @@ class MainController extends Controller
     public function index(Request $request)
     {
 
-        return view('welcome');
+            $clientPath = public_path('img/client');
+            $clients = [];
+
+            if (is_dir($clientPath)) {
+                foreach (scandir($clientPath) as $file) {
+                    if ($file !== '.' && $file !== '..') {
+                        $ext = pathinfo($file, PATHINFO_EXTENSION);
+                        if (in_array(strtolower($ext), ['jpg','jpeg','png','gif','webp','svg'])) {
+                            $clients[] = 'img/client/' . $file;
+                        }
+                    }
+                }
+            }
+
+            return view('welcome', compact('clients'));
 
     }
     

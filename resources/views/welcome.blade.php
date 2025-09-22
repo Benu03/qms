@@ -87,6 +87,79 @@
         .animate-fade-in { opacity:0; transform:translateY(30px); animation: fadeIn 1s ease-in-out forwards; }
         @keyframes fadeIn { to { opacity:1; transform:translateY(0); } }
     </style>
+
+    <style>
+        .clients-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:20px;
+    margin-top:20px;
+}
+.client-card {
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition: all 0.3s ease;
+}
+.client-card:hover {
+    transform:translateY(-5px);
+    background:linear-gradient(135deg, #d72f4b, #d72f4b);
+}
+.client-card img {
+    max-height:80px;
+    width:auto;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.map-embed {
+    margin-top: 20px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.map-embed iframe {
+    width: 100%;
+    height: 350px; /* bisa disesuaikan */
+    border: 0;
+}
+
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* rasio 16:9 */
+    height: 0;
+    overflow: hidden;
+    border-radius: 15px;       /* rounded */
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15); /* shadow */
+    margin: 20px 30px 30px 30px;  /* atas 20px, kanan 30px, bawah 30px, kiri 30px */
+    transition: transform 0.3s ease;
+}
+
+.video-container:hover {
+    transform: scale(1.02); /* efek zoom halus saat hover */
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+ 
+
+
+    </style>
 </head>
 <body>
     <div class="container">
@@ -106,6 +179,17 @@
                     PT. Qiprah Multi Service adalah perusahaan alih daya (outsourcing) yang berdiri sejak tahun 2016, bergerak dalam semua aspek operasional dan pemeliharaan fasilitas di berbagai sektor perusahaan. Kami berkomitmen untuk menjadi solusi partner terpercaya yang membantu klien fokus pada bisnis inti mereka dengan semboyan "Attitude for Success".
                 </p>
             </div>
+
+             <div class="video-container">
+        <iframe 
+            src="https://www.youtube.com/embed/XG1QoxgK-0o?si=NzqsSKdRvodpHr27" 
+            title="Company Profile Video" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            allowfullscreen>
+        </iframe>
+    </div>
         </div>
 
         <!-- Vision & Mission -->
@@ -167,35 +251,78 @@
             </div>
         </div>
 
-        <!-- Clients -->
-        <div class="profile-card animate-fade-in">
-            <div class="section">
-                <h2 class="section-title">Klien Terpercaya</h2>
-                <div class="clients-grid">
-                    <div class="client-card">Universitas Dian Nuswantoro</div>
-                    <div class="client-card">Universitas Negeri Semarang</div>
-                    <div class="client-card">Petronas</div>
-                    <div class="client-card">PT. Helmut Zepf</div>
-                    <div class="client-card">Dan Banyak Lagi...</div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Contact -->
+
+
         <div class="profile-card animate-fade-in">
-            <div class="section">
-                <h2 class="section-title">Hubungi Kami</h2>
-                <div class="contact-info">
-                    <div class="contact-grid">
-                        <div class="contact-item"><div class="contact-icon">📍</div><div><strong>Alamat:</strong><br>RUKO BASUDEWA RIVER VIEW<br>Jl. Basudewa Raya No. 3A<br>Semarang Selatan, Kec. Bulustalan<br>Kota Semarang</div></div>
-                        <div class="contact-item"><div class="contact-icon">📞</div><div><strong>Telepon:</strong><br>024-86042357</div></div>
-                        <div class="contact-item"><div class="contact-icon">✉️</div><div><strong>Email:</strong><br>pt.qms@qiprahmultiservice.co.id</div></div>
-                        <div class="contact-item"><div class="contact-icon">🕒</div><div><strong>Jam Operasional:</strong><br>Senin - Sabtu: 08.00 - 17.00 WIB<br>Minggu: TUTUP</div></div>
+        <div class="section">
+            <h2 class="section-title">Klien Terpercaya</h2>
+            <div class="clients-grid">
+                @foreach($clients as $client)
+                    <div class="client-card">
+                        <img src="{{ asset($client) }}" alt="Client Logo" style="max-width:150px; max-height:100px; object-fit:contain;">
                     </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
+
+            <div class="profile-card animate-fade-in">
+    <div class="section">
+        <h2 class="section-title">Hubungi Kami</h2>
+        <div class="contact-info">
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div>
+                        <strong>Alamat:</strong><br>
+                        RUKO BASUDEWA RIVER VIEW<br>
+                        Jl. Basudewa Raya No. 3A<br>
+                        Semarang Selatan, Kec. Bulustalan<br>
+                        Kota Semarang
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <div>
+                        <strong>Telepon:</strong><br>
+                        024-86042357
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">✉️</div>
+                    <div>
+                        <strong>Email:</strong><br>
+                        pt.qms@qiprahmultiservice.co.id
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">🕒</div>
+                    <div>
+                        <strong>Jam Operasional:</strong><br>
+                        Senin - Sabtu: 08.00 - 17.00 WIB<br>
+                        Minggu: TUTUP
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map -->
+            <div class="map-embed">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3129.983458139091!2d110.4030117!3d-6.9884492!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e708beb16cc030b%3A0x542707dd892bb98!2sPT.Qiprah%20Multi%20Service!5e1!3m2!1sid!2sid!4v1758553103681!5m2!1sid!2sid"
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+
+
+
 
     <!-- Footer -->
     <div class="footer">
