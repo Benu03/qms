@@ -2,17 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
-    TestController,
-    DashboardController,
-    MainController,
-    ServicesController,
-    MasterController,
-    SPKController,
-    ReportController,
-    ApprovalController,
-    InvoiceController,
-    FeatureController,
-    B2CController
+    MainController
+
 };
 
 /*
@@ -26,26 +17,10 @@ use App\Http\Controllers\{
 |
 */
 
-Route::group(['middleware' => ['session_key']],function(){
-
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-    Route::get('/profile', [MainController::class, 'profile'])->name('profile');
-    Route::post('/logout', [MainController::class, 'logout'])->name('logout');
-    Route::get('/lobby', [MainController::class, 'lobby'])->name('lobby');
-    Route::get('/get-notification', [MainController::class, 'getNotifications'])->name('getnotif');
-    Route::post('/update-notif', [MainController::class, 'updateNotifIsread'])->name('updatenotif');
+Route::get('/', [MainController::class, 'index'])->name('index');
+Route::get('/login', [MainController::class, 'login'])->name('login');
 
 
-
-
-
-
-
-    
-
-
-
-
-    
+Route::fallback(function () {
+    return response()->view('global.notification.url_forbidden', ['title' => 'Forbidden'], 403);
 });

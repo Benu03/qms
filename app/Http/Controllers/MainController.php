@@ -15,91 +15,35 @@ use Illuminate\Support\Facades\Session;
 class MainController extends Controller
 {
 
-    public function profile(Request $request)
+    public function index(Request $request)
     {
-            
 
-        $data = [   'title' => 'Dashboard',
-                    'user' =>  Session::get('user_module'),
-                    'module' => Session::get('modules'),
-                    'content'   => 'dasboard/bengkel'
-                ];
-        return view('layout/wrapper',$data);
+            $clientPath = public_path('img/client');
+            $clients = [];
+
+            if (is_dir($clientPath)) {
+                foreach (scandir($clientPath) as $file) {
+                    if ($file !== '.' && $file !== '..') {
+                        $ext = pathinfo($file, PATHINFO_EXTENSION);
+                        if (in_array(strtolower($ext), ['jpg','jpeg','png','gif','webp','svg'])) {
+                            $clients[] = 'img/client/' . $file;
+                        }
+                    }
+                }
+            }
+
+            return view('welcome', compact('clients'));
 
     }
-
-
-    public function logout(Request $request) {
-
-        $body = [
-            'session_token' => session()->get('user_module')['session_token'],
-            'username'      => session()->get('user_module')['username']
-        ];
-
-        $timestamp = Carbon::now()->format('Y-m-d H:i:s');
-        $encryptionKey = config('static.key_access') . $timestamp;
-        $key = hash(config('static.key_hash'), $encryptionKey);
-        $responseSession = Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'key-service' => $key,
-            'timestamp' => $timestamp
-        ])->withoutVerifying()->post( config('static.url_access').'/auth/logout', $body);
-
-        $responseSessionData = json_decode($responseSession ,true);
-
-        if($responseSessionData['status'] == 200){
-            session()->flush();
-            return redirect(config('static.url_portal_ts3_main').'login');
-        }
+    
+    public function login()
+    {
+  
+         return redirect(config('static.url_login_mudahin'));
          
-
     }
 
 
-    public function lobby(Request $request) {
-        
-        session()->flush();
-        return redirect(config('static.url_portal_ts3_main').'lobby');
-
-    }
-
-
-    
-    public function getNotifications()
-    {
-        
-        $username = session()->get('user_module')['username'];
-        $oneWeekAgo = Carbon::now()->subWeek();
-        $notifications = DB::connection('sso')->table('ntf.v_ntf_notification_list')
-        ->where('username',$username)
-        ->where('module','MOTOR SERVICE')
-        ->where('created_date', '>=', $oneWeekAgo)
-        ->orderBy('created_date', 'desc')->get();
-        return response()->json($notifications);
-    }
-
-    public function updateNotifIsread(Request $request)
-    {
-        $notifId = $request->input('notif_id');
-        $username = session()->get('user_module')['username'];
-    
-        $alreadyExists = DB::connection('sso')->table('ntf.ntf_notification_read')
-            ->where('ntf_notification_id', $notifId)
-            ->where('username', $username)
-            ->exists();
-    
-        if (!$alreadyExists) {
-
-            DB::connection('sso')->table('ntf.ntf_notification_read')->insert([
-                'is_read' => true,
-                'ntf_notification_id' => $notifId,
-                'username' => $username,
-                'created_date' => Carbon::now()
-            ]);
-        }
-    
-        return response()->json(['success' => true]);
-    }
 
 
 
