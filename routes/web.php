@@ -22,5 +22,5 @@ Route::get('/login', [MainController::class, 'login'])->name('login');
 
 
 Route::fallback(function () {
-    return response()->view('global.notification.url_forbidden', ['title' => 'Forbidden'], 403);
+    return response()->view('url_forbidden', ['title' => 'Forbidden'], 403);
 });

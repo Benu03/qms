@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family: 'Poppins', sans-serif; line-height:1.6; color:#333; background: linear-gradient(135deg, #f54b64, #5563de); min-height:100vh; }
+        body { font-family: 'Poppins', sans-serif; line-height:1.6; color:#333; background: linear-gradient(135deg, #ee314dff, #e66007ff); min-height:100vh; }
 
         .container { max-width:1200px; margin:0 auto; padding:20px; }
 
@@ -19,11 +19,29 @@
         /* Header */
         .header { background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?fit=crop&w=1200&q=80') center/cover no-repeat; color:white; padding:60px 20px; text-align:center; position:relative; border-radius:25px 25px 0 0; }
         .header::after { content:''; position:absolute; inset:0; background: rgba(0,0,0,0.4); border-radius:25px 25px 0 0; }
-        .header img { position: relative; width:140px; height:140px; border-radius:50%; border:5px solid white; z-index:1; animation: logoBounce 1s ease infinite alternate; }
-        @keyframes logoBounce { 0%{transform:translateY(0);} 100%{transform:translateY(-15px);} }
+        .header img {
+        position: relative;
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        border: 5px solid white;
+        z-index: 1;
+        animation: logoPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+        0%, 100% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(255,255,255,0.6);
+        }
+        50% {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px 5px rgba(255,255,255,0.4);
+        }
+        }
 
         /* Button Login */
-        .login-btn { position:absolute; top:20px; right:20px; padding:10px 20px; background: linear-gradient(135deg, #ff758c, #d72f4b); color:white; border:none; border-radius:25px; cursor:pointer; font-weight:600; z-index:2; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .login-btn { position:absolute; top:20px; right:20px; padding:10px 20px; background: linear-gradient(135deg, #ff758c74, #c61936ff); color:white; border:none; border-radius:25px; cursor:pointer; font-weight:600; z-index:2; transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .login-btn:hover { transform: scale(1.1); box-shadow:0 8px 20px rgba(0,0,0,0.2); }
 
         .section { padding:40px; border-bottom:1px solid #eee; }
@@ -69,7 +87,7 @@
         .client-card:hover { transform:translateY(-5px); background:linear-gradient(135deg, #d72f4b, #d72f4b); color:white; }
 
         /* Contact */
-        .contact-info { background: linear-gradient(135deg, #5563de, #8e44ad); border-radius:20px; padding:30px; color:white; }
+        .contact-info { background: linear-gradient(135deg,  #ee314dff, #e66007ff); border-radius:20px; padding:30px; color:white; }
         .contact-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:30px; }
         .contact-item { display:flex; align-items:flex-start; gap:15px; }
         .contact-icon { width:40px; height:40px; background: rgba(255,255,255,0.2); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
@@ -90,84 +108,133 @@
 
     <style>
         .clients-grid {
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-    gap:20px;
-    margin-top:20px;
-}
-.client-card {
-    background:white;
-    border-radius:15px;
-    padding:20px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    transition: all 0.3s ease;
-}
-.client-card:hover {
-    transform:translateY(-5px);
-    background:linear-gradient(135deg, #d72f4b, #d72f4b);
-}
-.client-card img {
-    max-height:80px;
-    width:auto;
-}
+        display:grid;
+        grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+        gap:20px;
+        margin-top:20px;
+            }
+            .client-card {
+                background:white;
+                border-radius:15px;
+                padding:20px;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                transition: all 0.3s ease;
+            }
+            .client-card:hover {
+                transform:translateY(-5px);
+                background:linear-gradient(135deg, #d72f4b, #d72f4b);
+            }
+            .client-card img {
+                max-height:80px;
+                width:auto;
+            }
 
-.contact-info {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
+            .contact-info {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
 
-.map-embed {
-    margin-top: 20px;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
+            .map-embed {
+                margin-top: 20px;
+                border-radius: 15px;
+                overflow: hidden;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            }
 
-.map-embed iframe {
-    width: 100%;
-    height: 350px; /* bisa disesuaikan */
-    border: 0;
-}
+            .map-embed iframe {
+                width: 100%;
+                height: 350px; /* bisa disesuaikan */
+                border: 0;
+            }
 
 
-.video-container {
-    position: relative;
-    padding-bottom: 56.25%; /* rasio 16:9 */
-    height: 0;
-    overflow: hidden;
-    border-radius: 15px;       /* rounded */
-    box-shadow: 0 6px 16px rgba(0,0,0,0.15); /* shadow */
-    margin: 20px 30px 30px 30px;  /* atas 20px, kanan 30px, bawah 30px, kiri 30px */
-    transition: transform 0.3s ease;
-}
+            .video-container {
+                position: relative;
+                padding-bottom: 56.25%; /* rasio 16:9 */
+                height: 0;
+                overflow: hidden;
+                border-radius: 15px;       /* rounded */
+                box-shadow: 0 6px 16px rgba(0,0,0,0.15); /* shadow */
+                margin: 20px 30px 30px 30px;  /* atas 20px, kanan 30px, bawah 30px, kiri 30px */
+                transition: transform 0.3s ease;
+            }
 
-.video-container:hover {
-    transform: scale(1.02); /* efek zoom halus saat hover */
-}
+            .video-container:hover {
+                transform: scale(1.02); /* efek zoom halus saat hover */
+            }
 
-.video-container iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-}
- 
+            .video-container iframe {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border: 0;
+            }
+            
+            #scrollTopBtn {
+                position: fixed;
+                bottom: 30px;
+                right: 30px;
+                background: #ff6b6b;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                font-size: 22px;
+                cursor: pointer;
+                display: none; /* disembunyikan awalnya */
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+                transition: all 0.3s ease;
+                z-index: 9999;
+            }
+
+            #scrollTopBtn:hover {
+                background: #ff3b3b;
+                transform: translateY(-5px);
+            }
+
+
+            .contact-row {
+                display: flex;
+                align-items: flex-start;
+                margin-bottom: 15px;
+            }
+
+            .contact-row .contact-icon {
+                font-size: 22px;
+                margin-right: 10px;
+                line-height: 1.4;
+            }
+
+            .contact-link {
+                color: #ffffffff;
+                text-decoration: none;
+                transition: color 0.2s ease;
+            }
+
+            .contact-link:hover {
+                color: #ffffffff;
+            }
 
 
     </style>
+
 </head>
 <body>
     <div class="container">
         <!-- Header -->
         <div class="profile-card animate-fade-in" style="position:relative;">
-            <div class="header">
-                <img src="{{ asset('img/qms_logo.png') }}" alt="Logo QMS">
-                 <a href="{{ route('login') }}" class="login-btn">Login</a>
+            <div class="header" id="dynamicHeader">
+                <img src="{{ asset('img/qms_logo.png') }}" alt="Logo QMS"> 
+                 <a href="{{ route('login') }}" class="login-btn" style="text-decoration:none;"> Login</a>
+
             </div>
         </div>
 
@@ -189,7 +256,7 @@
             referrerpolicy="strict-origin-when-cross-origin" 
             allowfullscreen>
         </iframe>
-    </div>
+        </div>
         </div>
 
         <!-- Vision & Mission -->
@@ -252,20 +319,18 @@
         </div>
 
 
-
-
         <div class="profile-card animate-fade-in">
-        <div class="section">
-            <h2 class="section-title">Klien Terpercaya</h2>
-            <div class="clients-grid">
-                @foreach($clients as $client)
-                    <div class="client-card">
-                        <img src="{{ asset($client) }}" alt="Client Logo" style="max-width:150px; max-height:100px; object-fit:contain;">
-                    </div>
-                @endforeach
+            <div class="section">
+                <h2 class="section-title">Klien Terpercaya</h2>
+                <div class="clients-grid">
+                    @foreach($clients as $client)
+                        <div class="client-card">
+                            <img src="{{ asset($client) }}" alt="Client Logo" style="max-width:150px; max-height:100px; object-fit:contain;">
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
-    </div>
 
             <div class="profile-card animate-fade-in">
     <div class="section">
@@ -282,20 +347,31 @@
                         Kota Semarang
                     </div>
                 </div>
+    
+
                 <div class="contact-item">
-                    <div class="contact-icon">📞</div>
-                    <div>
-                        <strong>Telepon:</strong><br>
-                        024-86042357
+                    <div class="contact-text">
+                        <div class="contact-row">
+                            <div class="contact-icon">📞</div>
+                            <div>
+                                <strong>Telepon:</strong><br>
+                           
+                                 <strong>024-86042357</strong>
+                            </div>
+                        </div>
+
+                        <div class="contact-row">
+                            <div class="contact-icon">✉️</div>
+                            <div>
+                                <strong>Email:</strong><br>
+                        
+                                 <strong>pt.qms@qiprahmultiservice.co.id</strong>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="contact-item">
-                    <div class="contact-icon">✉️</div>
-                    <div>
-                        <strong>Email:</strong><br>
-                        pt.qms@qiprahmultiservice.co.id
-                    </div>
-                </div>
+
+
                 <div class="contact-item">
                     <div class="contact-icon">🕒</div>
                     <div>
@@ -316,19 +392,42 @@
                 </iframe>
             </div>
         </div>
+        </div>
     </div>
+
 </div>
 
-    </div>
 
-
-
+<button id="scrollTopBtn" title="Kembali ke atas">⬆</button>
 
     <!-- Footer -->
     <div class="footer">
-        <p>&copy; 2024 PT. Qiprah Multi Service. All rights reserved.</p>
+        <p>&copy; {{ date('Y') }} PT. Qiprah Multi Service. All rights reserved.</p>
         <p><strong>"Kami siap membantu dalam memberikan solusi terbaik yang menyesuaikan kebutuhan bisnis Anda"</strong></p>
     </div>
+
+    <script>
+    const header = document.getElementById("dynamicHeader");
+
+    // Daftar URL gambar
+        const images = [
+            "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?fit=crop&w=1200&q=80",
+            "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?fit=crop&w=1200&q=80",
+            "https://images.unsplash.com/photo-1519389950473-47ba0277781c?fit=crop&w=1200&q=80", // tim kerja
+            "https://images.unsplash.com/photo-1498050108023-c5249f4df085?fit=crop&w=1200&q=80", // developer workspace
+            "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?fit=crop&w=1200&q=80", // creative
+            "https://images.unsplash.com/photo-1521791055366-0d553872125f?fit=crop&w=1200&q=80", // teamwork
+            "https://images.unsplash.com/photo-1521791136064-7986c2920216?fit=crop&w=1200&q=80", // planning
+        ];
+    let current = 0;
+
+    function changeBackground() {
+        current = (current + 1) % images.length;
+        header.style.backgroundImage = `url('${images[current]}')`;
+    }
+
+    setInterval(changeBackground, 10000);
+</script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -358,5 +457,26 @@
             });
         });
     </script>
+    <script>
+    const scrollTopBtn = document.getElementById("scrollTopBtn");
+
+    // Munculkan tombol jika user scroll > 300px
+    window.addEventListener("scroll", () => {
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            scrollTopBtn.style.display = "flex";
+        } else {
+            scrollTopBtn.style.display = "none";
+        }
+    });
+
+    // Scroll ke atas dengan smooth animation
+    scrollTopBtn.addEventListener("click", () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    });
+</script>
+
 </body>
 </html>
